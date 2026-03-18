@@ -844,20 +844,22 @@ func ConvertToOption(typeParam TypeTag, arg any, generics []TypeTag, options ...
 			if length == 0 {
 				return bcs.SerializeU8(0)
 			} else {
-				b := []byte{1}
 				buffer, err := convertCompatibilitySerializedType(typeParam, des, generics)
 				if err != nil {
 					return nil, err
 				}
+				b := make([]byte, 1, 1+len(buffer))
+				b[0] = 1
 				return append(b, buffer...), nil
 			}
 		}
 	}
 
-	b := []byte{1}
 	buffer, err := ConvertArg(typeParam, arg, generics, options...)
 	if err != nil {
 		return nil, err
 	}
+	b := make([]byte, 1, 1+len(buffer))
+	b[0] = 1
 	return append(b, buffer...), nil
 }
